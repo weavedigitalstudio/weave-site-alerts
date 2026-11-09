@@ -38,9 +38,14 @@
 		S + ' .wsa__title{font-weight:700!important;color:inherit!important;letter-spacing:normal!important;text-transform:none!important;margin-right:.35em}' +
 		S + ' a{color:inherit!important;background:none!important;text-decoration:underline!important;text-underline-offset:2px;font:inherit!important;font-weight:700!important;white-space:nowrap}' +
 		S + ' a:hover,' + S + ' a:focus{text-decoration-thickness:2px!important}' +
-		S + ' .wsa__close{flex:0 0 auto;width:44px;height:44px;min-width:0;margin:-10px -12px -10px 0;padding:0;border:0!important;background:transparent!important;color:inherit!important;box-shadow:none!important;font:inherit;font-size:26px!important;line-height:1!important;cursor:pointer;border-radius:4px}' +
+		S + ' .wsa__close{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;min-width:0;margin:-10px -12px -10px 0;padding:0;border:0!important;background:transparent!important;color:inherit!important;box-shadow:none!important;font:inherit;font-size:26px!important;line-height:1!important;cursor:pointer;border-radius:4px}' +
+		S + ' .wsa__close svg{display:block;width:20px;height:20px}' +
 		S + ' .wsa__close:focus-visible{outline:2px solid currentColor;outline-offset:-4px}' +
 		S + ' .wsa__badge{display:inline-block;margin-right:.5em;padding:0 .4em;border:1px solid currentColor;border-radius:3px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}' +
+		// Desktop: the icon and text sit together in the centre, the close
+		// button pinned right. Phones keep the left-aligned layout, which
+		// reads faster once the message wraps to four or five lines.
+		'@media (min-width:783px){' + S + ' .wsa__inner{justify-content:center;position:relative;padding-left:56px;padding-right:56px}' + S + ' .wsa__text{flex:0 1 auto;text-align:center!important}' + S + ' .wsa__close{position:absolute;right:8px;top:50%;transform:translateY(-50%);margin:0}}' +
 		'@media (max-width:600px){' + S + '{font-size:15px!important}' + S + ' .wsa__inner{padding:10px 12px;gap:10px}}' +
 		'@media print{' + S + ' .wsa__close{display:none}}';
 
@@ -135,7 +140,23 @@
 			text.appendChild( node );
 		} );
 
-		var close = el( 'button', 'wsa__close', '×' );
+		// A drawn cross, not the × character: some site fonts draw that tiny.
+		var close = el( 'button', 'wsa__close' );
+		var ns = 'http://www.w3.org/2000/svg';
+		var cross = document.createElementNS( ns, 'svg' );
+		cross.setAttribute( 'viewBox', '0 0 24 24' );
+		cross.setAttribute( 'width', '20' );
+		cross.setAttribute( 'height', '20' );
+		cross.setAttribute( 'aria-hidden', 'true' );
+		cross.setAttribute( 'focusable', 'false' );
+		var line = document.createElementNS( ns, 'path' );
+		line.setAttribute( 'd', 'M6 6l12 12M18 6L6 18' );
+		line.setAttribute( 'stroke', 'currentColor' );
+		line.setAttribute( 'stroke-width', '2.2' );
+		line.setAttribute( 'stroke-linecap', 'round' );
+		line.setAttribute( 'fill', 'none' );
+		cross.appendChild( line );
+		close.appendChild( cross );
 		close.type = 'button';
 		close.setAttribute( 'aria-label', 'Hide this notice' );
 		close.addEventListener( 'click', function () {

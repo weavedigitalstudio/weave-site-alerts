@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1, 10 November 2026
+
+- On desktop the notice is centred, icon and text together, with the close button on the right. Phones keep the left-aligned layout, which reads faster when the message wraps.
+- The close button is a drawn cross, so it is the same clear size whatever the site's font.
+
 ## 0.1.0, 9 November 2026
 
 First version.

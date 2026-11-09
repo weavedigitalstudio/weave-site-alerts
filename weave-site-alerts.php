@@ -3,7 +3,7 @@
  * Plugin Name:       Weave Site Alerts
  * Plugin URI:        https://github.com/weavedigitalstudio/weave-site-alerts
  * Description:       Shows an emergency notice across the top of every page when Weave switches one on centrally. Does nothing the rest of the time.
- * Version:           0.1.0
+ * Version:           0.1.1
  * Requires at least: 7.0
  * Requires PHP:      8.1
  * Author:            Weave Digital Studio
@@ -22,7 +22,7 @@ namespace WeaveSiteAlerts;
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WEAVE_SITE_ALERTS_VERSION', '0.1.0' );
+define( 'WEAVE_SITE_ALERTS_VERSION', '0.1.1' );
 define( 'WEAVE_SITE_ALERTS_FILE', __FILE__ );
 define( 'WEAVE_SITE_ALERTS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WEAVE_SITE_ALERTS_URL', plugin_dir_url( __FILE__ ) );
