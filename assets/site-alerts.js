@@ -263,13 +263,14 @@
 		}
 	}
 
-	function digits( value ) {
-		var d = String( value ).replace( /[^0-9]/g, '' );
-		return d.replace( /^(64|61)/, '' ).replace( /^0/, '' );
-	}
+	// Something that reads as a phone number: optional +, then digits with
+	// spaces, brackets or hyphens, at least seven digits in all.
+	var NUMBER = /\+?\(?\d[\d\s().-]{5,}\d/g;
 
-	// During a phone outage, send the page's own "call us" links to the
-	// backup number too. Link text is changed only when it was the old number.
+	// During a phone outage, point the page's own phone links at the backup
+	// number, and show it: any phone number written inside a tel: link
+	// (including links with an icon inside) becomes the backup number. Words
+	// such as a branch name are left alone.
 	function swapPhoneLinks( to, display ) {
 		if ( ! safeTel( to ) ) {
 			return;
@@ -279,13 +280,20 @@
 			if ( link.closest( S ) ) {
 				return;
 			}
-			var old = link.getAttribute( 'href' ).slice( 4 );
-			if ( digits( old ) === digits( to ) ) {
+			link.setAttribute( 'href', 'tel:' + to );
+			if ( ! display ) {
 				return;
 			}
-			link.setAttribute( 'href', 'tel:' + to );
-			if ( display && link.children.length === 0 && digits( link.textContent ) === digits( old ) ) {
-				link.textContent = display;
+			var walker = document.createTreeWalker( link, NodeFilter.SHOW_TEXT );
+			var node;
+			while ( ( node = walker.nextNode() ) ) {
+				var text = node.nodeValue;
+				var next = text.replace( NUMBER, function ( match ) {
+					return match.replace( /[^0-9]/g, '' ).length >= 7 ? display : match;
+				} );
+				if ( next !== text ) {
+					node.nodeValue = next;
+				}
 			}
 		} );
 	}

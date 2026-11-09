@@ -30,7 +30,7 @@ The site must also be listed in the service's config for its group, under its ho
 
 - A bar at the very top: amber with a warning icon for `urgent` notices, pale with an information icon for a calmer `notice` (planned maintenance, holiday hours), with the message, tap-to-call and email links, and a close button. Closing it hides that notice for the rest of the visit.
 - If the theme pins its header to the top of the screen, the notice pins above it and moves the header down, so neither covers the other.
-- During a phone outage, the notice can also point the page's own "call us" links at the backup number. A link's text changes only when it showed the old number.
+- During a phone outage, the notice can also point the page's own "call us" links at the backup number. Any phone number written inside those links, including icon links, shows the backup number. Words such as a branch name stay.
 - Screen readers get the notice as a labelled region at the start of the page.
 
 ## Settings, for developers
