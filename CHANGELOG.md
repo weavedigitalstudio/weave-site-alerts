@@ -8,6 +8,7 @@ First version.
 - Pinned headers (Beaver Builder fixed header, top bars) are detected: the notice pins above them and moves them down.
 - Theme CSS cannot restyle the notice: its styles are scoped to `#weave-site-alert` and forced.
 - During a phone outage the notice can point the page's own phone links at a backup number.
+- Two levels: `urgent` (amber, warning icon) and `notice` (pale, information icon) for planned or less serious messages.
 - Dismiss button, remembered for the browser session per notice.
 - `?alert-preview` on any URL shows notices still in preview.
 - GitHub release updater for the public repository, no token needed.

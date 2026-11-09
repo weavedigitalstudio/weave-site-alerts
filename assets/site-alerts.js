@@ -31,7 +31,7 @@
 	var css =
 		S + '{position:relative;display:block;margin:0;background:#f5c242!important;color:#1a1a1a!important;font-size:16px!important;line-height:1.45!important;text-align:left!important;box-shadow:0 1px 0 rgba(0,0,0,.15)}' +
 		S + '.wsa--fixed{position:fixed!important;top:0;left:0;right:0}' +
-		S + '.wsa--info{background:#1f2933!important;color:#fff!important}' +
+		S + '.wsa--notice{background:#dde9f0!important;color:#10212b!important;box-shadow:inset 0 -1px 0 #b3c6d2}' +
 		S + ' .wsa__inner{display:flex;align-items:flex-start;gap:12px;max-width:1200px;margin:0 auto;padding:12px 16px;box-sizing:border-box}' +
 		S + ' .wsa__icon{flex:0 0 auto;width:22px;height:22px;margin-top:1px}' +
 		S + ' .wsa__text{flex:1 1 auto;margin:0!important;padding:0!important;font:inherit!important;color:inherit!important;letter-spacing:normal!important;text-transform:none!important}' +
@@ -77,7 +77,13 @@
 		return typeof value === 'string' && /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test( value );
 	}
 
-	function icon() {
+	// "!" in a circle for urgent, "i" in a circle for a notice.
+	var ICONS = {
+		urgent: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 5a1.25 1.25 0 0 1 1.25 1.25v4.5a1.25 1.25 0 0 1-2.5 0v-4.5A1.25 1.25 0 0 1 12 7Zm0 10.5a1.4 1.4 0 1 1 0-2.8 1.4 1.4 0 0 1 0 2.8Z',
+		notice: 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 4.6a1.4 1.4 0 1 1 0 2.8 1.4 1.4 0 0 1 0-2.8Zm1.25 10.9a1.25 1.25 0 0 1-2.5 0v-5a1.25 1.25 0 0 1 2.5 0v5Z',
+	};
+
+	function icon( level ) {
 		var ns = 'http://www.w3.org/2000/svg';
 		var svg = document.createElementNS( ns, 'svg' );
 		svg.setAttribute( 'class', 'wsa__icon' );
@@ -86,13 +92,14 @@
 		svg.setAttribute( 'focusable', 'false' );
 		var path = document.createElementNS( ns, 'path' );
 		path.setAttribute( 'fill', 'currentColor' );
-		path.setAttribute( 'd', 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 5a1.25 1.25 0 0 1 1.25 1.25v4.5a1.25 1.25 0 0 1-2.5 0v-4.5A1.25 1.25 0 0 1 12 7Zm0 10.5a1.4 1.4 0 1 1 0-2.8 1.4 1.4 0 0 1 0 2.8Z' );
+		path.setAttribute( 'd', ICONS[ level ] || ICONS.urgent );
 		svg.appendChild( path );
 		return svg;
 	}
 
 	function build( alert ) {
-		var root = el( 'div', 'wsa' + ( alert.level === 'info' ? ' wsa--info' : '' ) );
+		var level = alert.level === 'notice' ? 'notice' : 'urgent';
+		var root = el( 'div', 'wsa wsa--' + level );
 		root.id = ID;
 		root.setAttribute( 'role', 'region' );
 		root.setAttribute( 'aria-label', alert.label || 'Important notice' );
@@ -101,7 +108,7 @@
 		var text = el( 'p', 'wsa__text' );
 		text.setAttribute( 'aria-live', 'polite' );
 
-		inner.appendChild( icon() );
+		inner.appendChild( icon( level ) );
 		inner.appendChild( text );
 
 		if ( alert.preview ) {

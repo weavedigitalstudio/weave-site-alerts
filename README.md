@@ -28,7 +28,7 @@ The site must also be listed in the service's config for its group, under its ho
 
 ## What visitors see
 
-- An amber bar (or dark, for `info` notices) at the very top, with the message, tap-to-call and email links, and a close button. Closing it hides that notice for the rest of the visit.
+- A bar at the very top: amber with a warning icon for `urgent` notices, pale with an information icon for a calmer `notice` (planned maintenance, holiday hours), with the message, tap-to-call and email links, and a close button. Closing it hides that notice for the rest of the visit.
 - If the theme pins its header to the top of the screen, the notice pins above it and moves the header down, so neither covers the other.
 - During a phone outage, the notice can also point the page's own "call us" links at the backup number. A link's text changes only when it showed the old number.
 - Screen readers get the notice as a labelled region at the start of the page.
