@@ -1,0 +1,58 @@
+name: Build Plugin Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Get the version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Check the tag matches the plugin header and constant
+        run: |
+          V="${VERSION#v}"
+          grep -q "^ \* Version:           ${V}$" weave-site-alerts.php || { echo "Plugin header is not ${V}"; exit 1; }
+          grep -q "define( 'WEAVE_SITE_ALERTS_VERSION', '${V}' );" weave-site-alerts.php || { echo "Version constant is not ${V}"; exit 1; }
+
+      - name: Copy plugin files to build directory
+        run: |
+          mkdir -p build-release/weave-site-alerts
+          rsync -av \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.claude' \
+            --exclude='build-release' \
+            --exclude='tests' \
+            --exclude='.gitignore' \
+            --exclude='phpcs.xml.dist' \
+            --exclude='CHANGELOG.md' \
+            --exclude='CLAUDE.md' \
+            --exclude='.DS_Store' \
+            . build-release/weave-site-alerts/
+
+      - name: Create zip file
+        run: |
+          cd build-release
+          zip -r weave-site-alerts-${{ env.VERSION }}.zip weave-site-alerts
+          # Same zip under a fixed name, so releases/latest/download/weave-site-alerts.zip always works.
+          cp weave-site-alerts-${{ env.VERSION }}.zip weave-site-alerts.zip
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            build-release/weave-site-alerts-${{ env.VERSION }}.zip
+            build-release/weave-site-alerts.zip
+          # A tag with a hyphen (v1.2.0-rc.1) is a prerelease, which /releases/latest and so the updater ignores.
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          generate_release_notes: true
