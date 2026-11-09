@@ -33,7 +33,7 @@ define( 'WEAVE_SITE_ALERTS_URL', plugin_dir_url( __FILE__ ) );
  * Override with WEAVE_SITE_ALERTS_ENDPOINT in wp-config.php, for local
  * testing or a different service.
  */
-const DEFAULT_ENDPOINT = 'https://alerts.weave.digital/v1/alert/';
+const DEFAULT_ENDPOINT = 'https://weave-alerts.pages.dev/v1/alert/';
 
 require_once WEAVE_SITE_ALERTS_DIR . 'inc/frontend.php';
 

@@ -7,7 +7,7 @@ For example, when a client's phone system goes down and every one of their sites
 ## How it works
 
 1. The plugin adds one small deferred script to every public page.
-2. The script asks the Weave alerts service, `https://alerts.weave.digital/v1/alert/<this-site's-host>`, whether a notice is active.
+2. The script asks the Weave alerts service, `https://weave-alerts.pages.dev/v1/alert/<this-site's-host>`, whether a notice is active.
 3. If one is, the script draws it at the top of the page. If nothing is active, the answer is slow (5 seconds) or anything fails, nothing is drawn.
 
 The notice is never part of the page itself, so it stays out of any page cache. Switching a notice on or off needs no cache purge on any site, and sites pick the change up within about two minutes.
@@ -37,7 +37,7 @@ The site must also be listed in the service's config for its group, under its ho
 
 | Constant or filter | Default | Effect |
 |---|---|---|
-| `WEAVE_SITE_ALERTS_ENDPOINT` | `https://alerts.weave.digital/v1/alert/` | Service address. The site key is appended. |
+| `WEAVE_SITE_ALERTS_ENDPOINT` | `https://weave-alerts.pages.dev/v1/alert/` | Service address. The site key is appended. |
 | `WEAVE_SITE_ALERTS_SITE` | home URL host, no `www.` | Which site's notice to show. Lets a staging or local copy show the live site's notice. |
 | `weave_site_alerts_enabled` | `true` | Return false to switch the plugin off without deactivating it. |
 | `weave_site_alerts_endpoint` | full URL | Change the final address. |
